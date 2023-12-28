@@ -2,7 +2,6 @@
 
 A vcpkg port registry for Science.
 
-
 ## How to use
 
 The ports in this registry are consumed as overlay ports. To use them:
@@ -14,15 +13,14 @@ The ports in this registry are consumed as overlay ports. To use them:
 # cd into the repo
 cd vcpkg
 
-# add repo to path in current session (will not persist)
-export PATH=$PATH:$(pwd)
+# add repo's `ports/` to path in current session (will not persist)
+export PATH=$PATH:$(pwd)/ports
 
 # or, persist (bash)
-echo "export PATH=\$PATH:$(pwd)" >> ~/.bashrc
+echo "export PATH=\$PATH:$(pwd)/ports" >> ~/.bashrc
 source ~/.bashrc
 
 # or, persist (zsh)
-echo "export PATH=\$PATH:$(pwd)" >> ~/.zshenv
+echo "export PATH=\$PATH:$(pwd)/ports" >> ~/.zshenv
 source ~/.zshenv
 ```
-
