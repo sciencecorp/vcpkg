@@ -24,10 +24,8 @@ set_target_properties(ftd3xx PROPERTIES
 
 install(FILES ${LIB_PATH} DESTINATION lib)
 
-# Install header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
-        DESTINATION include/ftd3xx
-        FILES_MATCHING PATTERN "*.h")
+file(GLOB_RECURSE FTD3XX_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+install(FILES ${FTD3XX_HEADERS} DESTINATION include/ftd3xx)
 
 # Generate and install the package configuration file
 configure_file(cmake/Config.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/ftd3xxConfig.cmake" @ONLY)
