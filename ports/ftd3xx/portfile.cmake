@@ -50,7 +50,8 @@ file(INSTALL
     DESTINATION "${SOURCE_PATH}")
 file(INSTALL
     "${CMAKE_CURRENT_LIST_DIR}/cmake/Config.cmake.in"
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/Targets.cmake.in"
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/Targets-shared.cmake.in"
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/Targets-static.cmake.in"
     DESTINATION "${SOURCE_PATH}/cmake")
 
 vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}")
@@ -58,6 +59,43 @@ vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}")
 vcpkg_cmake_install()
 
 vcpkg_cmake_config_fixup()
+
+# TODO(antoniae):
+# the dylib is shipped with ID / install name that does not include @rpath
+# AFAIK there's no way for a consuming project to find the dylib without setting DYLD_LIBRARY_PATH
+# or using install_name_tool to change the ID to @rpath
+# however... changing the ID to @rpath invalidates the signature
+# this solution is really not ideal, there's probably a better way
+if (VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
+    if(VCPKG_TARGET_IS_OSX OR VCPKG_TARGET_IS_IOS)
+        find_program(INSTALL_NAME_TOOL install_name_tool
+            HINTS /usr/bin /Library/Developer/CommandLineTools/usr/bin/
+            REQUIRED
+        )
+        message(STATUS "Using install_name_tool: ${INSTALL_NAME_TOOL}")
+        vcpkg_execute_required_process(
+            COMMAND "${INSTALL_NAME_TOOL}" -id "@rpath/libftd3xx.dylib" "libftd3xx.dylib"
+            WORKING_DIRECTORY "${CURRENT_PACKAGES_DIR}/debug/lib"
+            LOGNAME "fix-rpath-dbg"
+        )
+        vcpkg_execute_required_process(
+            COMMAND "${INSTALL_NAME_TOOL}" -id "@rpath/libftd3xx.dylib" "libftd3xx.dylib"
+            WORKING_DIRECTORY "${CURRENT_PACKAGES_DIR}/lib"
+            LOGNAME "fix-rpath-rel"
+        )
+
+        vcpkg_execute_required_process(
+            COMMAND  codesign --force -s - ${CURRENT_PACKAGES_DIR}/debug/lib/libftd3xx.dylib
+            WORKING_DIRECTORY "${CURRENT_PACKAGES_DIR}"
+            LOGNAME "codesign-dbg"
+        )
+        vcpkg_execute_required_process(
+            COMMAND  codesign --force -s - ${CURRENT_PACKAGES_DIR}/lib/libftd3xx.dylib
+            WORKING_DIRECTORY "${CURRENT_PACKAGES_DIR}"
+            LOGNAME "codesign-rel"
+        )
+    endif()
+endif()
 
 # Clean
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")

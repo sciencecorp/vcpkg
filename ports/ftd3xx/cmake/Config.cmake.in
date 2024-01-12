@@ -1,12 +1,3 @@
 @PACKAGE_INIT@
 
 include("${CMAKE_CURRENT_LIST_DIR}/ftd3xxTargets.cmake")
-
-set(ftd3xx_INCLUDE_DIRS "@CMAKE_INSTALL_PREFIX@/include")
-
-if(NOT TARGET ftd3xx::ftd3xx)
-    add_library(ftd3xx::ftd3xx INTERFACE IMPORTED)
-    set_target_properties(ftd3xx::ftd3xx PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES "${ftd3xx_INCLUDE_DIRS}"
-    )
-endif()
