@@ -9,8 +9,37 @@
     "coreml": {
       "description": "CoreML support"
     },
-    "cuda": {
-      "description": "CUDA support"
+    "cuda50": {
+      "description": "CUDA architecture 5.0 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda52": {
+      "description": "CUDA architecture 5.2 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda60": {
+      "description": "CUDA architecture 6.0 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda61": {
+      "description": "CUDA architecture 6.1 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda70": {
+      "description": "CUDA architecture 7.0 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda75": {
+      "description": "CUDA architecture 7.5 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda80": {
+      "description": "CUDA architecture 8.0 support",
+      "dependencies": ["cuda"]
+    },
+    "cuda86": {
+      "description": "CUDA architecture 8.6 support",
+      "dependencies": ["cuda"]
     }
   },
   "dependencies": [

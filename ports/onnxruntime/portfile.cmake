@@ -1,15 +1,14 @@
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
     coreml          WITH_COREML
-    cuda            WITH_CUDA
-    cuda_50         WITH_CUDA_50
-    cuda_52         WITH_CUDA_52
-    cuda_60         WITH_CUDA_60
-    cuda_61         WITH_CUDA_61
-    cuda_70         WITH_CUDA_70
-    cuda_75         WITH_CUDA_75
-    cuda_80         WITH_CUDA_80
-    cuda_86         WITH_CUDA_86
+    cuda50          WITH_CUDA_50
+    cuda52          WITH_CUDA_52
+    cuda60          WITH_CUDA_60
+    cuda61          WITH_CUDA_61
+    cuda70          WITH_CUDA_70
+    cuda75          WITH_CUDA_75
+    cuda80          WITH_CUDA_80
+    cuda86          WITH_CUDA_86
     tests           WITH_TESTS
 )
 
@@ -66,28 +65,32 @@ elseif (VCPKG_TARGET_IS_LINUX)
         set(target_arch "aarch64")
     endif()
 
-    if (WITH_CUDA)
+    set(cuda_architectures "")
+    foreach(cuda_option IN ITEMS
+        WITH_CUDA_50
+        WITH_CUDA_52
+        WITH_CUDA_60
+        WITH_CUDA_61
+        WITH_CUDA_70
+        WITH_CUDA_75
+        WITH_CUDA_80
+        WITH_CUDA_86)
+        message(STATUS "- CUDA OPTION: ${cuda_option}: ${${cuda_option}}")
+        if (${${cuda_option}})
+            set(cuda_enabled ON)
+            string(REPLACE "WITH_CUDA_" "" cuda_arch "${cuda_option}")
+            message(STATUS "- enabling cuda ${cuda_option}: ${${cuda_option}} ${cuda_arch}")
+            list(APPEND cuda_architectures "${cuda_arch}")
+        endif()
+    endforeach()
+    
+    if (cuda_enabled)
+        list(JOIN cuda_architectures "\\;" cuda_architectures)
+        set(cmake_extra_defines ${cmake_extra_defines} CUDA_ARCHITECTURES=${cuda_architectures})
+
         set(CUDA_HOME "/usr/local/cuda")
         set(CUDNN_HOME "/usr/lib/${target_arch}-linux-gnu/")
         set(build_options ${build_options} --cuda_home ${CUDA_HOME} --cudnn_home ${CUDNN_HOME} --use_cuda)
-       
-        set(cuda_architectures "")
-        foreach(cuda_option IN ITEMS
-            WITH_CUDA_50
-            WITH_CUDA_52
-            WITH_CUDA_60
-            WITH_CUDA_61
-            WITH_CUDA_70
-            WITH_CUDA_75
-            WITH_CUDA_80
-            WITH_CUDA_86)
-            if (${cuda_option})
-                string(REPLACE "WITH_CUDA_" "" cuda_arch "${cuda_option}")
-                list(APPEND cuda_architectures "${cuda_arch}")
-                endif()
-            list(JOIN cuda_architectures "\\;" cuda_architectures)
-            set(cmake_extra_defines ${cmake_extra_defines} CUDA_ARCHITECTURES=${cuda_architectures})
-        endforeach()
     endif()
 endif()
 
