@@ -1,12 +1,12 @@
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:sciencecorp/synapse.git
-    REF "5fc5360c34c85ff5ac44c2412548fb63880897f9"
+    REF "f31ceed2e1c58ac9f5ee48eb0cc2dc44de0e003a"
     HEAD_REF main
 )
 
 vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}/api"
+    SOURCE_PATH "${SOURCE_PATH}"
 )
 
 vcpkg_cmake_install()
