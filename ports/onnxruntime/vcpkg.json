@@ -1,0 +1,26 @@
+{
+  "name": "onnxruntime",
+  "version": "1.16.3",
+  "description": "onnxruntime",
+  "homepage": "https://github.com/microsoft/onnxruntime",
+  "license": "MIT",
+  "supports": "arm64 | x64 | linux | osx",
+  "features": {
+    "coreml": {
+      "description": "CoreML support"
+    },
+    "cuda": {
+      "description": "CUDA support"
+    }
+  },
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}
