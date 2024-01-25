@@ -1,4 +1,6 @@
+set(no_remove_one_level NO_REMOVE_ONE_LEVEL)
 if (VCPKG_TARGET_IS_LINUX)
+    set(no_remove_one_level "")
     if (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm")
         # https://ftdichip.com/wp-content/uploads/2023/06/libftd3xx-linux-arm-v6-hf-1.0.14.tgz
         # 92687cb0ccb297d64e6982a7052396fdc54f37edc26dcca1c16ee3534eaf555a8129912e220c543e380294827fc14aead7020e0c3c71050297ab3b50af82391b
@@ -37,7 +39,7 @@ vcpkg_download_distfile(
 vcpkg_extract_source_archive(
     SOURCE_PATH
     ARCHIVE "${ARCHIVE}"
-    NO_REMOVE_ONE_LEVEL
+    ${no_remove_one_level}
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
