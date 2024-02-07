@@ -153,9 +153,7 @@ endforeach()
 # Install
 vcpkg_cmake_install()
 
-if (VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
-    vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/${PORT})
-endif()
+vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/${PORT})
 
 # License
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")
