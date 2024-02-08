@@ -41,9 +41,12 @@ if (NOT WITH_TESTS)
     set(build_options ${build_options} --skip_tests)
 endif()
 
-if (VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
-    set(build_options ${build_options} --build_shared_lib)
-endif()
+# if (VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
+#     set(build_options ${build_options} --build_shared_lib)
+# endif()
+
+# TODO(antoniae): bad, but only the shared build produces cmake config files
+set(build_options ${build_options} --build_shared_lib)
 
 if (VCPKG_TARGET_IS_OSX)
     set(osx_arch ${VCPKG_TARGET_ARCHITECTURE})
