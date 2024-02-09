@@ -1,7 +1,7 @@
 set(no_remove_one_level NO_REMOVE_ONE_LEVEL)
 if (VCPKG_TARGET_IS_LINUX)
     set(no_remove_one_level "")
-    if (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm")
+    if (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
         # https://ftdichip.com/wp-content/uploads/2023/06/libftd3xx-linux-arm-v6-hf-1.0.14.tgz
         # 92687cb0ccb297d64e6982a7052396fdc54f37edc26dcca1c16ee3534eaf555a8129912e220c543e380294827fc14aead7020e0c3c71050297ab3b50af82391b
 
@@ -10,7 +10,7 @@ if (VCPKG_TARGET_IS_LINUX)
 
         # https://ftdichip.com/wp-content/uploads/2023/06/libftd3xx-linux-arm-v8-1.0.14.tgz
         # 9fab2f40b8e2933a8c8b1af7244b4b1f715e1817ea46765e66f680b946e7c22ab1ca8ba21e9e99b44875611acd603d40df963f67f22250dc4f14a4c4885cc6d3
-        set(ARCHIVE_URL "# https://ftdichip.com/wp-content/uploads/2023/06/libftd3xx-linux-arm-v8-1.0.14.tgz")
+        set(ARCHIVE_URL "https://ftdichip.com/wp-content/uploads/2023/06/libftd3xx-linux-arm-v8-1.0.14.tgz")
         set(ARCHIVE_SHA512 "9fab2f40b8e2933a8c8b1af7244b4b1f715e1817ea46765e66f680b946e7c22ab1ca8ba21e9e99b44875611acd603d40df963f67f22250dc4f14a4c4885cc6d3")
 
     elseif (VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
