@@ -1,8 +1,9 @@
-vcpkg_from_git(
+vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
-    URL git@github.com:foxglove/mcap.git
-    REF "f87352f0aaae81628bdd7ffc43f7563f6bd98547"
-    HEAD_REF "main"
+    REPO foxglove/mcap
+    REF "releases/cpp/v1.3.0"
+    SHA512 5083878127bc4010b24aae79fbb13014794bcc2632dc77c74ba61556c3f6ec1c46bb095b2f8d96ef0b9803eebdd701cdf7cba610f21da635fe4e81a21b867bde
+    HEAD_REF main
 )
 
 file(INSTALL
