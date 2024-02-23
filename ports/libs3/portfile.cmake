@@ -13,6 +13,8 @@ vcpkg_from_github(
 # https://github.com/microsoft/vcpkg/pull/31150/files#diff-fc2d1983b84c8b4510ea06cc300599a3cb9a68bd1f0d517f6f78150abf85def3
 file(COPY "${CMAKE_CURRENT_LIST_DIR}/configure" DESTINATION "${SOURCE_PATH}")
 
+vcpkg_cmake_get_vars(cmake_vars_file)
+
 vcpkg_configure_make(
     SOURCE_PATH "${SOURCE_PATH}"
     COPY_SOURCE
