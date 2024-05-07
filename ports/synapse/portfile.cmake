@@ -1,7 +1,7 @@
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:sciencecorp/synapse.git
-    REF "03d60bf6620e77509081d6627e49b15bce31c762"
+    REF "0858c624f3e7732517242f324ebec51330ffbc3d"
     HEAD_REF main
 )
 
