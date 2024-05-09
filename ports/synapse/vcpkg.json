@@ -12,5 +12,14 @@
       "host": true
     },
     "ftd3xx"
-  ]
+  ],
+  "features": {
+    "cli": {
+      "description": "synapse CLI"
+    },
+    "tests": {
+      "description": "synapse test suite",
+      "dependencies": []
+    }
+  }
 }
