@@ -7,7 +7,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:sciencecorp/synapse.git
-    REF "815ac5e06051b3d16f35344f0cd43b79c100a02d"
+    REF "f1d5869ee6d92bc0fafa08334d37c73ca356cbb7"
     HEAD_REF main
 )
 
