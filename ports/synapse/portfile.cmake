@@ -4,12 +4,31 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     tests           WITH_TESTS
 )
 
-vcpkg_from_git(
-    OUT_SOURCE_PATH SOURCE_PATH
-    URL git@github.com:sciencecorp/synapse.git
-    REF "355c6a02644231ba46c0f712163dfdf0c6409f16"
-    HEAD_REF main
-)
+# Manually clone & checkout the repository, in order to init submodules
+#   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
+#       https://github.com/microsoft/vcpkg/issues/6886
+set(URL "git@github.com:sciencecorp/synapse-client-cpp.git")
+set(REF "aadbd9e84002e075eb7e3182dc44af893b908075")
+set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
+
+if(NOT EXISTS "${SOURCE_PATH}/.git")
+    file(REMOVE_RECURSE ${SOURCE_PATH})
+    file(MAKE_DIRECTORY ${SOURCE_PATH})
+
+	message(STATUS "Cloning and fetching submodules")
+	vcpkg_execute_required_process(
+	  COMMAND ${GIT} clone --recurse-submodules ${URL} ${SOURCE_PATH}
+	  WORKING_DIRECTORY ${SOURCE_PATH}
+	  LOGNAME clone
+	)
+
+	message(STATUS "Checkout revision ${GIT_REV}")
+	vcpkg_execute_required_process(
+	  COMMAND ${GIT} checkout ${REF}
+	  WORKING_DIRECTORY ${SOURCE_PATH}
+	  LOGNAME checkout
+	)
+endif()
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
