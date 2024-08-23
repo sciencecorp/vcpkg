@@ -78,6 +78,9 @@ if (TARGET_TRIPLET STREQUAL "arm64-osx")
     list(APPEND OTHER_FLAGS "DISABLE_SANITIZER=1")
 endif()
 
+# set the default number of rows to split query results into DataChunks to 1000
+list(APPEND OTHER_FLAGS "STANDARD_VECTOR_SIZE=1000")
+
 vcpkg_configure_make(
     SOURCE_PATH "${SOURCE_PATH}"
     COPY_SOURCE
