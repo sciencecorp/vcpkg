@@ -3,7 +3,7 @@ vcpkg_from_github(
     REPO duckdb/duckdb
     REF v${VERSION}
     HEAD_REF main
-    SHA512 9f3f470aeaecc65506ec66183bef4b039cf2a23685ce8c876ce9862e9c5746e8150ace3d37acf167f15611f2bf078f85e8ed0b397397d7391fc044a75c59271a
+    SHA512 13c67623fc3cc38e7c2e3986b5a3c7d212a8b315a8914ce9b3777bbdac5cb988c956b0a1a698b0af6e7c7211ca7130ed01595c78c92055bfa52ab85e358fe52a
 )
 
 vcpkg_check_features(
@@ -50,18 +50,18 @@ function(clean_flags in_list out_list)
     set(temp_list "")
     foreach(flag IN LISTS in_list)
         string(REGEX REPLACE "^-D" "" flag "${flag}")
-        
+
         if(flag MATCHES "^(.+)=(.+)$")
             set(flag_name "${CMAKE_MATCH_1}")
             set(flag_value "${CMAKE_MATCH_2}")
-            
+
             if(flag_value STREQUAL "ON")
                 set(flag_value "1")
                 list(APPEND temp_list "${flag_name}=${flag_value}")
             endif()
         endif()
     endforeach()
-    
+
     set(${out_list} ${temp_list} PARENT_SCOPE)
 endfunction()
 
@@ -88,7 +88,7 @@ vcpkg_configure_make(
 #
 # https://duckdb.org/docs/dev/building/build_instructions
 # https://duckdb.org/docs/dev/building/building_extensions
-# 
+#
 # set the environment variables
 # - GEN=ninja
 # - BUILD_<flag>=1 (for all enabled build flags)
@@ -141,7 +141,7 @@ foreach(buildtype IN ITEMS "debug" "release")
         else()
             vcpkg_list(APPEND make_vars "COMMON_CMAKE_VARS=-DCMAKE_INSTALL_PREFIX=${CURRENT_PACKAGES_DIR}")
         endif()
-        
+
         # Configure and build
 
         set(working_directory ${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${short_buildtype})
@@ -182,10 +182,10 @@ foreach(buildtype IN ITEMS "debug" "release")
         endforeach()
 
         # Install build
-      
+
         vcpkg_execute_build_process(
             COMMAND
-                "${CMAKE_COMMAND}" --build . --target install 
+                "${CMAKE_COMMAND}" --build . --target install
             NO_PARALLEL_COMMAND
                 "${CMAKE_COMMAND}" --build . --target install
             WORKING_DIRECTORY "${build_path}"
@@ -204,6 +204,8 @@ vcpkg_cmake_config_fixup(
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/duckdb/storage/serialization")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/duckdb/main/capi/header_generation/apis")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/duckdb/main/capi/header_generation/functions")
 
 # License
 vcpkg_install_copyright(FILE_LIST ${SOURCE_PATH}/LICENSE)
