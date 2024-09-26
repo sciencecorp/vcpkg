@@ -1,6 +1,5 @@
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
-    cli             WITH_CLI
     tests           WITH_TESTS
 )
 
@@ -8,7 +7,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 #   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
 #       https://github.com/microsoft/vcpkg/issues/6886
 set(URL "git@github.com:sciencecorp/synapse-client-cpp.git")
-set(REF "b9257eae39a55435ed0e6fe5b3cdda923918449b")
+set(REF "3d1195249a7658335938193c0b7d1a8f2ff74791")
 set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
 
 if(NOT EXISTS "${SOURCE_PATH}/.git")
@@ -33,7 +32,6 @@ endif()
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
-        -DSYNAPSE_BUILD_CLI=${WITH_CLI}
         -DSYNAPSE_BUILD_TESTS=${WITH_TESTS}
 )
 
