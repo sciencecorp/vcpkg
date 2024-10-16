@@ -7,7 +7,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 #   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
 #       https://github.com/microsoft/vcpkg/issues/6886
 set(URL "git@github.com:sciencecorp/libndtp.git")
-set(REF "ea4e483b495cf71c08029ca55904db7aac22bbee")
+set(REF "dc0905e1199dabc36df5e5c5a03e55ca168c9783")
 set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
 
 if(NOT EXISTS "${SOURCE_PATH}/.git")
