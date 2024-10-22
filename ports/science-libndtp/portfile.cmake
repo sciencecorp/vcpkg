@@ -6,8 +6,8 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 # Manually clone & checkout the repository, in order to init submodules
 #   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
 #       https://github.com/microsoft/vcpkg/issues/6886
-set(URL "git@github.com:sciencecorp/synapse-cpp.git")
-set(REF "683746db8af4138e00c995b7cb6a03a5b7a41feb")
+set(URL "git@github.com:sciencecorp/libndtp.git")
+set(REF "9af56efcd7fc03c01f4d54d426765d6ce4cd3acc")
 set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
 
 if(NOT EXISTS "${SOURCE_PATH}/.git")
@@ -43,7 +43,7 @@ vcpkg_cmake_configure(
 
 vcpkg_cmake_install()
 
-vcpkg_cmake_config_fixup(PACKAGE_NAME synapse CONFIG_PATH lib/cmake/synapse)
+vcpkg_cmake_config_fixup(PACKAGE_NAME science-libndtp CONFIG_PATH lib/cmake/libndtp)
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 

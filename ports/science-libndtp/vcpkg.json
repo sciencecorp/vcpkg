@@ -1,8 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "name": "synapse",
+  "name": "science-libndtp",
   "version": "0.1.0",
-  "default-features": ["protos"],
+  "supports": "arm64 | x64 | linux | osx",
+  "default-features": [],
   "dependencies": [
     {
       "name": "vcpkg-cmake",
@@ -12,21 +13,12 @@
       "name": "vcpkg-cmake-config",
       "host": true
     },
-    "grpc",
-    "protobuf",
-    "science-libndtp",
-    "science-scipp"
+    "protobuf"
   ],
   "features": {
-    "cli": {
-      "description": "synapse CLI"
-    },
-    "protos": {
-      "description": "synapse api proto files"
-    },
     "tests": {
-      "description": "synapse test suite",
-      "dependencies": []
+      "description": "libndtp test suite",
+      "dependencies": ["gtest"]
     }
   }
 }
