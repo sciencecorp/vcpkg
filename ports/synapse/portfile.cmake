@@ -7,7 +7,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 #   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
 #       https://github.com/microsoft/vcpkg/issues/6886
 set(URL "git@github.com:sciencecorp/synapse-cpp.git")
-set(REF "683746db8af4138e00c995b7cb6a03a5b7a41feb")
+set(REF "fd214137b444a3b52ae121cb9bf2c2bad023911c")
 set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
 
 if(NOT EXISTS "${SOURCE_PATH}/.git")
