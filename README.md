@@ -47,3 +47,18 @@ VCPKG_OVERLAY_PORTS=<path to your vcpkg submodule>/ports
 # Then you'll be able to run
 vcpkg install # as usual
 ```
+
+## Updating a Port
+When you update a port (either by updating the hash it represents or the logic to build) you must also update the `versions/baseline.json`.
+
+You can simply increment the `port-version` field if you update the port. You should also update the `baseline` field if the version has changed.
+
+Example:
+- Original baseline.json:
+  "my-lib": { "baseline": "1.2.3", "port-version": 0 }
+
+- After changing build flags:
+  "my-lib": { "baseline": "1.2.3", "port-version": 1 }
+
+- After upgrading to new version:
+  "my-lib": { "baseline": "1.2.4", "port-version": 0 }
