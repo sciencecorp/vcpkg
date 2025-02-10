@@ -28,7 +28,7 @@ file(RENAME "${SOURCE_PATH_ARCHIVE}" "${SOURCE_PATH}/external/sciencecorp/synaps
 
 
 vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+	SOURCE_PATH "${SOURCE_PATH}"
 )
 
 vcpkg_cmake_install()
