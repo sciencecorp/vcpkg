@@ -3,42 +3,31 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     tests           WITH_TESTS
 )
 
-# Manually clone & checkout the repository, in order to init submodules
-#   See https://github.com/Microsoft/vcpkg/blob/master/scripts/cmake/vcpkg_from_git.cmake
-#       https://github.com/microsoft/vcpkg/issues/6886
-set(URL "git@github.com:sciencecorp/synapse-cpp.git")
-set(REF "f8d947e5e873a0b61693ff123cb0761e3c091949")
-set(SOURCE_PATH ${CURRENT_BUILDTREES_DIR}/src/${PORT})
+# Clone repo, then manually download submodules
+#   See https://github.com/microsoft/vcpkg/issues/1036#issuecomment-299608663
+vcpkg_from_github(
+	OUT_SOURCE_PATH SOURCE_PATH
+	REPO sciencecorp/synapse-cpp
+	REF 80eb3f56f9b11c0ec8a17cb23ffc2a200b1ef08b
+	SHA512 4722eafe59993bf3d174cafd523cb4b20b84d75d233f38ea9e5fdadc02d2a5af0676098b49f411aeaada5900482696ccdf10a47a8cdd6dc75d46cc4f5a9ac9ae
+)
 
-if(NOT EXISTS "${SOURCE_PATH}/.git")
-	file(REMOVE_RECURSE ${SOURCE_PATH})
-	file(MAKE_DIRECTORY ${SOURCE_PATH})
+vcpkg_download_distfile(API_ARCHIVE
+	URLS "https://github.com/sciencecorp/synapse-api/archive/6b02951bcad82241719853487eceebe78eb6835f.zip"
+	FILENAME "synapse-api.zip"
+	SOURCE_BASE "synapse-api"
+	SHA512 d049339e09954ff8274870f61cb39b8227e960414f8762c047a55bc36439eb5ab76d0d25e3fd5a2be2d16ef7e0b87906304042c1d26830769893846370f0dbfb
+)
 
-	message(STATUS "Cloning repository")
-	vcpkg_execute_required_process(
-	  COMMAND ${GIT} clone ${URL} ${SOURCE_PATH}
-	  WORKING_DIRECTORY ${SOURCE_PATH}
-	  LOGNAME clone
-	)
+vcpkg_extract_source_archive(
+	SOURCE_PATH_ARCHIVE
+	ARCHIVE ${API_ARCHIVE}
+)
 
-	message(STATUS "Checking out revision ${REF}")
-	vcpkg_execute_required_process(
-	  COMMAND ${GIT} checkout ${REF}
-	  WORKING_DIRECTORY ${SOURCE_PATH}
-	  LOGNAME checkout
-	)
-
-	message(STATUS "Fetching submodules")
-	vcpkg_execute_required_process(
-	  COMMAND ${GIT} submodule update --init --recursive
-	  WORKING_DIRECTORY ${SOURCE_PATH}
-	  LOGNAME submodule
-	)
-
-endif()
+file(RENAME "${SOURCE_PATH_ARCHIVE}" "${SOURCE_PATH}/external/sciencecorp/synapse-api")
 
 vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+	SOURCE_PATH "${SOURCE_PATH}"
 )
 
 vcpkg_cmake_install()
