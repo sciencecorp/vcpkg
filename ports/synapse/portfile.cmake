@@ -13,10 +13,10 @@ vcpkg_from_github(
 )
 
 vcpkg_download_distfile(API_ARCHIVE
-	URLS "https://github.com/sciencecorp/synapse-api/archive/6b02951bcad82241719853487eceebe78eb6835f.zip"
+	URLS "https://github.com/sciencecorp/synapse-api/archive/62ddda4e36a3f0f3c4608e3a3c30100d9716e0dd.zip"
 	FILENAME "synapse-api.zip"
 	SOURCE_BASE "synapse-api"
-	SHA512 d049339e09954ff8274870f61cb39b8227e960414f8762c047a55bc36439eb5ab76d0d25e3fd5a2be2d16ef7e0b87906304042c1d26830769893846370f0dbfb
+	SHA512 80c64c89387edf87a8ec1927e36c731b38325a3dab9439d00281d52500eef7b3d61c25853e8879e5785a904a39f54a53c292ccae8fd7bae1b1cfce97798b91fc
 )
 
 vcpkg_extract_source_archive(
