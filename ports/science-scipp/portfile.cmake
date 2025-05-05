@@ -6,7 +6,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
     URL git@github.com:sciencecorp/scipp.git
-    REF "24f0dfff85a4b7ef79d8af07b990fe3a703e8e92"
+    REF "ae1d57a885c95bc80ce902b6069252674a516480"
     HEAD_REF main
 )
 
