@@ -22,6 +22,7 @@ vcpkg_from_github(
         "patches/fix-ep-headers.patch"
         "patches/use-env-build-dir.patch"
         "patches/use-build-log-file.patch"
+        "patches/fix-eigen-sha1.patch"
 )
 
 # Configuration Options
@@ -34,7 +35,7 @@ set(generator "Unix Makefiles")
 set(Z_VCPKG_CMAKE_GENERATOR ${generator} CACHE INTERNAL "The generator which was used to configure CMake.")
 
 set(build_command "${SOURCE_PATH}/build.sh")
-set(build_options --parallel --skip_submodule_sync --cmake_generator ${generator})
+set(build_options --parallel --skip_submodule_sync --cmake_generator ${generator} --allow_running_as_root)
 set(cmake_extra_defines "ONNXRUNTIME_VERSION=${VERSION}")
 
 if (NOT WITH_TESTS)
@@ -62,10 +63,40 @@ if (VCPKG_TARGET_IS_OSX)
     endif()
 
 elseif (VCPKG_TARGET_IS_LINUX)
+    # linux_arch provides mapping from architecture name to name used in triplet for cuDNN installation location
     if (VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
         set(target_arch "x64")
+        set(linux_arch "x84_64")
     elseif (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
         set(target_arch "aarch64")
+        set(linux_arch "aarch64")
+        # Need to pass --arm64 to onnxruntime's build.sh -> ci_build.py to target arm64 and enable cross-compiling
+        set(build_options ${build_options} --arm64)
+    else()
+        message(FATAL_ERROR "Unsupported architecture: ${VCPKG_TARGET_ARCHITECTURE}")
+    endif()
+
+    # used downstream on onnxruntime's CMake
+    list(APPEND cmake_extra_defines "CMAKE_SYSTEM_PROCESSOR=${linux_arch}")
+    list(APPEND cmake_extra_defines "CMAKE_SYSTEM_NAME=Linux")
+
+    if (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
+        # Detect host architecture and check if we're cross-compiling
+        execute_process(COMMAND uname -m OUTPUT_VARIABLE HOST_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
+        message(STATUS "Host architecture: ${HOST_ARCH}")
+
+        if (NOT HOST_ARCH STREQUAL "aarch64")
+            message(STATUS "Cross-compiling from ${HOST_ARCH} to arm64")
+
+            if (EXISTS "/usr/bin/${target_arch}-linux-gnu-gcc")
+                message(STATUS "Using ${target_arch}-linux-gnu cross-compiler")
+                # onnxruntime's CMake needs to know the location of our cross-compilers
+                list(APPEND cmake_extra_defines "CMAKE_C_COMPILER=/usr/bin/${target_arch}-linux-gnu-gcc")
+                list(APPEND cmake_extra_defines "CMAKE_CXX_COMPILER=/usr/bin/${target_arch}-linux-gnu-g++")
+            else()
+                message(WARNING "No ARM64 cross-compiler found. Build may fail.")
+            endif()
+        endif()
     endif()
 
     set(cuda_architectures "")
@@ -89,10 +120,17 @@ elseif (VCPKG_TARGET_IS_LINUX)
     
     if (cuda_enabled)
         list(JOIN cuda_architectures "\\;" cuda_architectures)
-        set(cmake_extra_defines ${cmake_extra_defines} CUDA_ARCHITECTURES=${cuda_architectures})
+        list(APPEND cmake_extra_defines "CUDA_ARCHITECTURES=${cuda_architectures}")
 
+        # onnxruntime needs to know where our cuda and cuDNN installations are
         set(CUDA_HOME "/usr/local/cuda")
-        set(CUDNN_HOME "/usr/lib/${target_arch}-linux-gnu/")
+        if (target_arch STREQUAL "aarch64")
+            set(CUDNN_HOME "/usr/lib/aarch64-linux-gnu/")
+        elseif (target_arch STREQUAL "x64")
+            set(CUDNN_HOME "/usr/lib/x86_64-linux-gnu/")
+        else()
+            set(CUDNN_HOME "/usr/lib/${linux_arch}-linux-gnu/")
+        endif()
         set(build_options ${build_options} --cuda_home ${CUDA_HOME} --cudnn_home ${CUDNN_HOME} --use_cuda)
     endif()
 endif()
