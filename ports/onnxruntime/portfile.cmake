@@ -66,7 +66,7 @@ elseif (VCPKG_TARGET_IS_LINUX)
     # linux_arch provides mapping from architecture name to name used in triplet for cuDNN installation location
     if (VCPKG_TARGET_ARCHITECTURE STREQUAL "x64")
         set(target_arch "x64")
-        set(linux_arch "x84_64")
+        set(linux_arch "x86_64")
     elseif (VCPKG_TARGET_ARCHITECTURE STREQUAL "arm64")
         set(target_arch "aarch64")
         set(linux_arch "aarch64")
