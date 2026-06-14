@@ -1,0 +1,18 @@
+diff --git a/include/fmt/base.h b/include/fmt/base.h
+index 1111111..2222222 100644
+--- a/include/fmt/base.h
++++ b/include/fmt/base.h
+@@ -2879,7 +2879,11 @@ template <typename Char, typename... Args> class basic_format_string {
+     if constexpr (detail::count_named_args<Args...>() ==
+                   detail::count_statically_named_args<Args...>()) {
+       using checker =
+           detail::format_string_checker<Char, remove_cvref_t<Args>...>;
+-      detail::parse_format_string<true>(str_, checker(s));
++      // Clang 19+ does not guarantee that each evaluation of a string-literal
++      // expression yields the same pointer, so converting `s` to a string_view
++      // a second time inside the checker breaks compile-time pointer arithmetic
++      // (fmtlib/fmt#4177). Reuse the already-converted `str_` for both.
++      detail::parse_format_string<true>(str_, checker(str_));
+     }
+ #else
+     detail::check_format_string<Args...>(s);
