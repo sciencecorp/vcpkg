@@ -1,0 +1,10 @@
+set(VCPKG_TARGET_ARCHITECTURE arm64)
+set(VCPKG_CRT_LINKAGE dynamic)
+# static: embed deps into libscifi_server.so to avoid BoringSSL soname collision with Android system libcrypto/libssl.
+set(VCPKG_LIBRARY_LINKAGE static)
+set(VCPKG_CMAKE_SYSTEM_NAME Android)
+set(VCPKG_CMAKE_SYSTEM_VERSION 35)
+set(VCPKG_BUILD_TYPE release)
+set(VCPKG_C_FLAGS "-Wno-missing-template-arg-list-after-template-kw")
+set(VCPKG_CXX_FLAGS "-Wno-missing-template-arg-list-after-template-kw")
+set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/arm64-android-toolchain.cmake")
